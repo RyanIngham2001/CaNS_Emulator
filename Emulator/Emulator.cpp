@@ -1549,7 +1549,14 @@ void Group_1(BYTE opcode) {
 		set_flag_z(IndexRegister);
 		break;
 
+	case 0x1E:  // WAI
+
+		halt = true;
+
+		break;
 	}
+
+
 }
 
 void Group_2_Move(BYTE opcode) {
