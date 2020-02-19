@@ -1,44 +1,47 @@
-﻿  Emulator.cpp
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(456,28): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(509,28): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(515,28): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(521,28): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(527,28): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(533,28): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(539,28): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(579,28): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(622,23): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(632,23): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(819,75): warning C4554:  '<<': check operator precedence for possible error; use parentheses to clarify precedence
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(827,75): warning C4554:  '<<': check operator precedence for possible error; use parentheses to clarify precedence
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(988,1): warning C4996:  'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+﻿  stdafx.cpp
+  Emulator.cpp
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(464,19): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(689,29): warning C4244:  'argument': conversion from 'unsigned short' to 'unsigned char', possible loss of data
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(715,13): warning C4244:  'argument': conversion from 'unsigned short' to 'unsigned char', possible loss of data
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(741,13): warning C4244:  'argument': conversion from 'unsigned short' to 'unsigned char', possible loss of data
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(805,27): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(934,27): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(967,22): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(978,22): warning C4244:  '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1543,14): warning C4244:  'argument': conversion from 'unsigned short' to 'unsigned char', possible loss of data
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1549,14): warning C4244:  'argument': conversion from 'unsigned short' to 'unsigned char', possible loss of data
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(795,7): warning C4101:  'temp_word': unreferenced local variable
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(796,7): warning C4101:  'temp_word2': unreferenced local variable
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1706,75): warning C4554:  '<<': check operator precedence for possible error; use parentheses to clarify precedence
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1714,75): warning C4554:  '<<': check operator precedence for possible error; use parentheses to clarify precedence
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1877,1): warning C4996:  'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(208): message :  see declaration of 'fopen'
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1002,1): warning C4996:  'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1891,1): warning C4996:  'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(208): message :  see declaration of 'fopen'
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1071,19): warning C4244:  '=': conversion from '_TCHAR' to 'char', possible loss of data
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1080,20): warning C4244:  '=': conversion from '_TCHAR' to 'char', possible loss of data
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1159,1): warning C4996:  'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1955,19): warning C4244:  '=': conversion from '_TCHAR' to 'char', possible loss of data
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1964,20): warning C4244:  '=': conversion from '_TCHAR' to 'char', possible loss of data
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(2046,1): warning C4996:  'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(208): message :  see declaration of 'fopen'
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1165,1): warning C4996:  'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(2052,1): warning C4996:  'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message :  see declaration of 'sscanf'
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1167,1): warning C4996:  'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(2055,1): warning C4996:  'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message :  see declaration of 'sscanf'
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1193,1): warning C4996:  'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(2083,1): warning C4996:  'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1774): message :  see declaration of 'sprintf'
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1232,1): warning C4996:  'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(2120,1): warning C4996:  'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1774): message :  see declaration of 'sprintf'
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1242,1): warning C4996:  'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(2130,1): warning C4996:  'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message :  see declaration of 'sscanf'
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1246,1): warning C4996:  'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(2135,1): warning C4996:  'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message :  see declaration of 'sscanf'
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1287,1): warning C4996:  'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(2178,1): warning C4996:  'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message :  see declaration of 'sscanf'
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1289,1): warning C4996:  'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(2181,1): warning C4996:  'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(2263): message :  see declaration of 'sscanf'
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1314,1): warning C4996:  'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(2207,1): warning C4996:  'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\ucrt\stdio.h(1774): message :  see declaration of 'sprintf'
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1358,1): warning C4996:  'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(2251,1): warning C4996:  'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\winsock2.h(1831): message :  see declaration of 'inet_addr'
-\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(1363,1): warning C4996:  'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
+\\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Emulator\Emulator.cpp(2256,1): warning C4996:  'inet_addr': Use inet_pton() or InetPton() instead or define _WINSOCK_DEPRECATED_NO_WARNINGS to disable deprecated API warnings
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\um\winsock2.h(1831): message :  see declaration of 'inet_addr'
   Emulator.vcxproj -> \\nstu-nas01.uwe.ac.uk\users4$\rj2-ingham\Personal\newer_emulator\Debug\Emulator.exe
