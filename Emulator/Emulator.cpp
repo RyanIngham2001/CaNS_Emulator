@@ -1,4 +1,21 @@
-﻿
+﻿/*
+Name : Ryan James Ingham
+ID : 19003311
+Created : 01/02/2020
+Revised : 26/02/2020
+Description : 
+				Emulates a Chimera-2018-J CPU
+				Written in C language
+				Uses a switch/case with each opcode and given operand to emulate the workings of a CPU
+
+*/
+
+
+
+
+
+
+
 
 #include "stdafx.h"
 #include <winsock2.h>
@@ -391,6 +408,11 @@ BYTE fetch()
 
 void set_flag_v(BYTE in1, BYTE in2, BYTE out1)
 {
+	/* Function : set overflow flag 
+	   Parameters : BYTE in1, in2, in3
+	   Returns : N/A
+	   Warnings : None
+	*/
 	BYTE reg1in;
 	BYTE reg2in;
 	BYTE regOut;
@@ -411,6 +433,11 @@ void set_flag_v(BYTE in1, BYTE in2, BYTE out1)
 }
 
 void set_flag_z(BYTE inReg) {
+	/* Function: Set zero flag
+	   Parameters : BYTE inreg (register which sets zero flag)
+	   Returns : N/A
+	   Warnings : None
+	*/
 	BYTE reg;
 	reg = inReg;
 	if (reg == 0)
@@ -425,9 +452,14 @@ void set_flag_z(BYTE inReg) {
 
 
 void set_flag_n(BYTE inReg) {
+	/* Function : Set negative flag
+	   Parameters : BYTE inReg (register which sets negative flag)
+	   Returns : N/A
+	   Warnings : None
+	*/
 	BYTE reg;
 	reg = inReg;
-	if ((reg & 0x80) != 0)  
+	if ((reg & 0x80) != 0)
 	{
 		Flags = Flags | FLAG_N;
 	}
@@ -437,7 +469,13 @@ void set_flag_n(BYTE inReg) {
 	}
 }
 
+
 void set_flag_c(WORD inReg) {
+	/* Function : Set carry flag
+	   Parameters : WORD inReg (register which sets carry flag)
+	   Returns : N/A
+	   Warnings : None
+	*/
 	WORD reg;
 	reg = inReg;
 
@@ -528,18 +566,15 @@ void ADC(BYTE reg1, BYTE reg2)
 		Warnings : None
 	*/
 	WORD temp_word;
+	//adds two registers together
 	temp_word = (WORD)Registers[reg1] + (WORD)Registers[reg2];
-
-	if ((Flags & FLAG_C) != 0)
-	{
-		temp_word++;
-	}
 
 	set_flag_c(temp_word);
 	set_flag_n((BYTE)temp_word);
 	set_flag_z((BYTE)temp_word);
 	set_flag_v(Registers[reg1], Registers[reg2], (BYTE)temp_word);
 
+	//sets accumulator to sum of two registers
 	Registers[reg1] = (BYTE)temp_word;
 
 }
@@ -552,18 +587,15 @@ void SBC(BYTE reg1, BYTE reg2)
 		Warnings : None
 	*/
 	WORD temp_word;
+	// subtracts register from accumulator
 	temp_word = (WORD)Registers[reg1] - (WORD)Registers[reg2];
-
-	if ((Flags & FLAG_C) != 0)
-	{
-		temp_word++;
-	}
 
 	set_flag_c(temp_word);
 	set_flag_n((BYTE)temp_word);
 	set_flag_z((BYTE)temp_word);
 	set_flag_v(Registers[reg1], -Registers[reg2], (BYTE)temp_word);
 
+	// sets accumulator value to total of the subtraction
 	Registers[reg1] = (BYTE)temp_word;
 
 }
@@ -576,6 +608,7 @@ void CMP(BYTE reg1, BYTE reg2)
 		Warnings : None
 	*/
 	WORD temp_word;
+	// subtracts register from accumulator
 	temp_word = (WORD)Registers[reg1] - (WORD)Registers[reg2];
 
 	set_flag_c(temp_word);
@@ -592,16 +625,15 @@ void IOR(BYTE reg1, BYTE reg2)
 		Warnings : None
 	*/
 	WORD temp_word;
+	// bitwise OR between two registers
 	temp_word = (WORD)Registers[reg1] | (WORD)Registers[reg2];
 
-	if ((Flags & FLAG_C) != 0)
-	{
-		temp_word++;
-	}
+	Flags = Flags & (0xFF - FLAG_V);
 
 	set_flag_n((BYTE)temp_word);
 	set_flag_z((BYTE)temp_word);
 
+	//sets accumulator to value of OR calculation
 	Registers[reg1] = (BYTE)temp_word;
 }
 
@@ -613,16 +645,15 @@ void AND(BYTE reg1, BYTE reg2)
 		Warnings : None
 	*/
 	WORD temp_word;
+	// btwise AND between two registers
 	temp_word = (WORD)Registers[reg1] & (WORD)Registers[reg2];
 
-	if ((Flags & FLAG_C) != 0)
-	{
-		temp_word++;
-	}
+	Flags = Flags & (0xFF - FLAG_V);
 
 	set_flag_n((BYTE)temp_word);
 	set_flag_z((BYTE)temp_word);
 
+	// sets accumulator to value of AND calculation
 	Registers[reg1] = (BYTE)temp_word;
 }
 
@@ -634,16 +665,15 @@ void XOR(BYTE reg1, BYTE reg2)
 		Warnings : None
 	*/
 	WORD temp_word;
+	// bitwise XOR between accumulator and register
 	temp_word = (WORD)Registers[reg1] ^ (WORD)Registers[reg2];
 
-	if ((Flags & FLAG_C) != 0)
-	{
-		temp_word++;
-	}
+	Flags = Flags & (0xFF - FLAG_V);
 
 	set_flag_n((BYTE)temp_word);
 	set_flag_z((BYTE)temp_word);
 
+	//sets accumulator to value of XOR calculation
 	Registers[reg1] = (BYTE)temp_word;
 }
 
@@ -655,10 +685,13 @@ void BT(BYTE reg1, BYTE reg2)
 		Warnings : None
 	*/
 	WORD temp_word;
+	// bitwise AND between accumulator and register
 	temp_word = (WORD)Registers[reg1] & (WORD)Registers[reg2];
 
+	// Check if flag C set
 	if ((Flags & FLAG_C) != 0)
 	{
+		// if so, increment temp_word
 		temp_word++;
 	}
 
@@ -675,11 +708,14 @@ void ADI(BYTE reg)
 		Warnings : None
 	*/
 	WORD data = 0;
+	// get data to be added.
 	data = fetch();
 
 	WORD temp_word;
+	// temporary value to store the data and accumulator values
 	temp_word = (WORD)data + (WORD)Registers[reg];
 
+	// check if carry set
 	if ((Flags & FLAG_C) != 0)
 	{
 		temp_word++;
@@ -690,6 +726,7 @@ void ADI(BYTE reg)
 	set_flag_n(Registers[reg]);
 	set_flag_z(Registers[reg]);
 
+	// update accumulator with added data
 	Registers[reg] = (BYTE)temp_word;
 }
 
@@ -704,6 +741,7 @@ void SBI(BYTE reg)
 	data = fetch();
 
 	WORD temp_word;
+	// take away accumulator value from data
 	temp_word = (WORD)data - (WORD)Registers[reg];
 
 	if ((Flags & FLAG_C) != 0)
@@ -716,6 +754,7 @@ void SBI(BYTE reg)
 	set_flag_n(Registers[reg]);
 	set_flag_z(Registers[reg]);
 
+	// update accumulator with new value
 	Registers[reg] = (BYTE)temp_word;
 }
 
@@ -730,6 +769,7 @@ void CPI(BYTE reg)
 	data = fetch();
 
 	WORD temp_word;
+	// take away accumulator value from data
 	temp_word = (WORD)data - (WORD)Registers[reg];
 
 	if ((Flags & FLAG_C) != 0)
@@ -750,25 +790,19 @@ void ANI(BYTE reg)
 		Returns : N/A
 		Warnings : None
 	*/
-	WORD data = 0;
-	data = fetch();
-
 	WORD temp_word;
-	temp_word = (WORD)data & (WORD)Registers[reg];
-
-	if ((Flags & FLAG_C) != 0)
-	{
-		temp_word++;
-	}
-
-	set_flag_n(Registers[reg]);
-	set_flag_z(Registers[reg]);
+	WORD data;
+	data = fetch();
+	//bitwise AND between accumulator and data
+	temp_word = (WORD)Registers[reg] & (WORD)data;
+	set_flag_n(temp_word);
+	set_flag_z(temp_word);
 }
 
 void XRI(BYTE reg)
 {
 	/*	Function : XRI (Data bitwise XOR with accumulator)
-		Parameters : reg (BYTE) accumulator to be bitwise XOR'ed with data 
+		Parameters : reg (BYTE) accumulator to be bitwise XOR'ed with data
 		Returns : N/A
 		Warnings : None
 	*/
@@ -776,6 +810,7 @@ void XRI(BYTE reg)
 	data = fetch();
 
 	WORD temp_word;
+	//bitwise XOR between data nad accumulator
 	temp_word = (WORD)data ^ (WORD)Registers[reg];
 
 	if ((Flags & FLAG_C) != 0)
@@ -787,35 +822,59 @@ void XRI(BYTE reg)
 	set_flag_z(Registers[reg]);
 }
 
+BYTE getHB() {
+	// Function to fetch HB so it is not repeated in the code
+	BYTE HB = fetch();
+	return HB;
+}
+
+BYTE getLB() {
+	// Function to fetch LB so it is not repeated in the code
+	BYTE LB = fetch();
+	return LB;
+}
+
+
 void Group_1(BYTE opcode) {
+
+	//Initialise  used variables
 	BYTE LB = 0;
 	BYTE HB = 0;
 	WORD address = 0;
 	WORD data = 0;
 	WORD temp_word;
 	WORD temp_word2;
+	BYTE saved_flags;
+	WORD offset = 0;
+
 
 	switch (opcode) {
 
-		///LD (Loads memory into accumulator)///
+		//LD (Loads memory into accumulator)//
 
 	//LD Immediate
-	case 0xB7: 
+	case 0xB7:
 		data = fetch();
+		//load accumulator with data
 		Registers[REGISTER_A] = data;
 
 		set_flag_n(Registers[REGISTER_A]);
 		set_flag_z(Registers[REGISTER_A]);
+		//set carry flag
 		Flags = Flags & (0xFF - FLAG_C);
 		break;
 
-	// LD Absolute
-	case 0xC7: 
-		HB = fetch();
-		LB = fetch();
+		// LD Absolute
+	case 0xC7:
+		// get upper and lower bounds for address value
+		HB = getHB();
+		LB = getLB();
+		// get address value from upper and lower bounds
 		address += (WORD)((WORD)HB << 8) + LB;
+		// if address value is valid
 		if (address >= 0 && address < MEMORY_SIZE)
 		{
+			// Update accumulator wiwth value from memory at address
 			Registers[REGISTER_A] = Memory[address];
 		}
 		set_flag_n(Registers[REGISTER_A]);
@@ -823,11 +882,12 @@ void Group_1(BYTE opcode) {
 		Flags = Flags & (0xFF - FLAG_C);
 		break;
 
-	// LD Absolute indexed
+		// LD Absolute indexed
 	case 0xD7:
+		// add index register to address
 		address += IndexRegister;
-		HB = fetch();
-		LB = fetch();
+		HB = getHB();
+		LB = getLB();
 		address += (WORD)((WORD)HB << 8) + LB;
 		if (address >= 0 && address < MEMORY_SIZE)
 		{
@@ -842,11 +902,12 @@ void Group_1(BYTE opcode) {
 
 	//ST Absolute
 	case 0x10:
-		HB = fetch();
-		LB = fetch();
+		HB = getHB();
+		LB = getLB();
 		address += (WORD)((WORD)HB << 8) + LB;
 		if (address >= 0 && address < MEMORY_SIZE)
 		{
+			// store accumulator in memory
 			Memory[address] = Registers[REGISTER_A];
 		}
 		set_flag_n(Registers[REGISTER_A]);
@@ -854,11 +915,11 @@ void Group_1(BYTE opcode) {
 		Flags = Flags & (0xFF - FLAG_C);
 		break;
 
-	//ST Absolute indexed
+		//ST Absolute indexed
 	case 0x20:
 		address += IndexRegister;
-		HB = fetch();
-		LB = fetch();
+		HB = getHB();
+		LB = getLB();
 		address += (WORD)((WORD)HB << 8) + LB;
 		if (address >= 0 && address < MEMORY_SIZE)
 		{
@@ -899,16 +960,18 @@ void Group_1(BYTE opcode) {
 
 	case 0x4f: //LODS immediate
 		data = fetch();
+		// bitwise shift data 8 bits to the left and store in StackPointer
 		StackPointer = data << 8;
 		StackPointer += fetch();
 		break;
 
 	case 0x5F: //LODS absolute
-		HB = fetch();
-		LB = fetch();
+		HB = getHB();
+		LB = getLB();
 		address += (WORD)((WORD)HB << 8) + LB;
 		if (address >= 0 && address < MEMORY_SIZE - 1)
 		{
+			// store Memory value shifted left in StackPointer
 			StackPointer = (WORD)Memory[address] << 8;
 			StackPointer += Memory[address + 1];
 		}
@@ -916,8 +979,8 @@ void Group_1(BYTE opcode) {
 
 	case 0x6F: //LODS Absolute indexed
 		address += IndexRegister;
-		HB = fetch();
-		LB = fetch();
+		HB = getHB();
+		LB = getLB();
 		address += (WORD)((WORD)HB << 8) + LB;
 		if (address >= 0 && address < MEMORY_SIZE - 1)
 		{
@@ -930,25 +993,28 @@ void Group_1(BYTE opcode) {
 
 	case 0x4E: //LDX Immediate
 		data = fetch();
+		// directly load data into Index
 		IndexRegister = (WORD)data;
+		// set accumulator to data value
+
 		Registers[REGISTER_A] = data;
 		break;
 
 	case 0x5E: //LDX Absolute
-		HB = fetch();
-		LB = fetch();
+		HB = getHB();
+		LB = getLB();
 		address += (WORD)((WORD)HB << 8) + LB;
 		if (address >= 0 && address < MEMORY_SIZE)
 		{
+			// loads memory value into index register
 			IndexRegister = Memory[address];
 		}
-
 		break;
 
 	case 0x6E: //LDX Absolute indexed
 		address += IndexRegister;
-		HB = fetch();
-		LB = fetch();
+		HB = getHB();
+		LB = getLB();
 		address += (WORD)((WORD)HB << 8) + LB;
 		if (address >= 0 && address < MEMORY_SIZE)
 		{
@@ -959,24 +1025,75 @@ void Group_1(BYTE opcode) {
 		///STOX (Stores register X into memory)///
 
 	case 0x50: //STOX Absolute
-		HB = fetch();
-		LB = fetch();
+		HB = getHB();
+		LB = getLB();
 		address += (WORD)((WORD)HB << 8) + LB;
 		if (address >= 0 && address < MEMORY_SIZE)
 		{
+			// loads index register directly into memory
 			Memory[address] = IndexRegister;
 		}
 		break;
 
 	case 0x60: //Stox absolute indexed
 		address += IndexRegister;
-		HB = fetch();
-		LB = fetch();
+		HB = getHB();
+		LB = getLB();
 		address += (WORD)((WORD)HB << 8) + LB;
 		if (address >= 0 && address < MEMORY_SIZE)
 		{
+			// loads index register into memory
 			Memory[address] = IndexRegister;
 		}
+		break;
+
+	//SWI//
+	case 0x85:
+		PSH(REGISTER_A);
+		PSH(REGISTER_B);
+		PSH(REGISTER_C);
+		PSH(REGISTER_D);
+		PSH(REGISTER_E);
+		PSH(REGISTER_L);
+		PSH(REGISTER_H);
+		// if StackPointer is valid
+		if ((StackPointer >= 1) && (StackPointer < MEMORY_SIZE)) {
+			// load program counter into memory at StackPointer address
+			Memory[StackPointer] = ProgramCounter;
+			// decrement StackPointer.
+			StackPointer--;
+		}
+		// if stackPointer valid
+		if ((StackPointer >= 1) && (StackPointer < MEMORY_SIZE)) {
+			// Load flags into memory
+			Memory[StackPointer] = Flags;
+			// decrement stackpointer
+			StackPointer--;
+		}
+		Flags = Flags | FLAG_I;
+		break;
+
+
+	//RTI//
+	case 0x86: 
+		// if stackpointer valid
+		if ((StackPointer >= 0) && (StackPointer < MEMORY_SIZE - 1)) {
+			// increment  stack pointer and add top of stack to Flags.
+			StackPointer++;
+			Flags = Memory[StackPointer];
+		}
+		if ((StackPointer >= 0) && (StackPointer < MEMORY_SIZE - 1)) {
+			// increment stackPointer and add ToS to ProgramCounter
+			StackPointer++;
+			ProgramCounter = Memory[StackPointer];
+		}
+		POP(REGISTER_A);
+		POP(REGISTER_B);
+		POP(REGISTER_C);
+		POP(REGISTER_D);
+		POP(REGISTER_E);
+		POP(REGISTER_L);
+		POP(REGISTER_H);
 		break;
 
 		///PSH (Pushes register onto stack)///
@@ -1132,33 +1249,33 @@ void Group_1(BYTE opcode) {
 		CMP(REGISTER_A, REGISTER_H);
 		break;
 
-	case 0xF2: 
+	case 0xF2:
 		CMP(REGISTER_A, REGISTER_M);
 		break;
 
 		///IOR (Inclusive or register with accumulator)///
 
-	case 0x93: 
+	case 0x93:
 		IOR(REGISTER_A, REGISTER_B);
 		break;
 
-	case 0xA3: 
+	case 0xA3:
 		IOR(REGISTER_A, REGISTER_C);
 		break;
 
-	case 0xB3: 
+	case 0xB3:
 		IOR(REGISTER_A, REGISTER_D);
 		break;
 
-	case 0xC3: 
+	case 0xC3:
 		IOR(REGISTER_A, REGISTER_E);
 		break;
 
-	case 0xD3: 
+	case 0xD3:
 		IOR(REGISTER_A, REGISTER_L);
 		break;
 
-	case 0xE3: 
+	case 0xE3:
 		IOR(REGISTER_A, REGISTER_H);
 		break;
 
@@ -1168,362 +1285,1079 @@ void Group_1(BYTE opcode) {
 
 		///AND (AND register and accumulator)///
 
-	case 0x94: 
+	case 0x94:
 		AND(REGISTER_A, REGISTER_B);
 		break;
 
-	case 0xA4: 
+	case 0xA4:
 		AND(REGISTER_A, REGISTER_C);
 		break;
 
-	case 0xB4: 
+	case 0xB4:
 		AND(REGISTER_A, REGISTER_D);
 		break;
 
-	case 0xC4: 
+	case 0xC4:
 		AND(REGISTER_A, REGISTER_E);
 		break;
 
-	case 0xD4: 
+	case 0xD4:
 		AND(REGISTER_A, REGISTER_L);
 		break;
 
-	case 0xE4: 
+	case 0xE4:
 		AND(REGISTER_A, REGISTER_H);
 		break;
 
-	case 0xF4: 
+	case 0xF4:
 		AND(REGISTER_A, REGISTER_M);
 		break;
 
 		///XOR (Register XOR with accumulator)/// 
 
-	case 0x95: 
+	case 0x95:
 		XOR(REGISTER_A, REGISTER_B);
 		break;
 
-	case 0xA5: 
+	case 0xA5:
 		XOR(REGISTER_A, REGISTER_C);
 		break;
 
-	case 0xB5: 
+	case 0xB5:
 		XOR(REGISTER_A, REGISTER_D);
 		break;
 
-	case 0xC5: 
+	case 0xC5:
 		XOR(REGISTER_A, REGISTER_E);
 		break;
 
-	case 0xD5: 
+	case 0xD5:
 		XOR(REGISTER_A, REGISTER_L);
 		break;
 
-	case 0xE5: 
+	case 0xE5:
 		XOR(REGISTER_A, REGISTER_H);
 		break;
 
-	case 0xF5: 
+	case 0xF5:
 		XOR(REGISTER_A, REGISTER_M);
 		break;
 
 		///BT (Bit compare register and accumulator)///
 
-	case 0x96: 
+	case 0x96:
 		BT(REGISTER_A, REGISTER_B);
 		break;
 
-	case 0xA6: 
+	case 0xA6:
 		BT(REGISTER_A, REGISTER_C);
 		break;
 
-	case 0xB6: 
+	case 0xB6:
 		BT(REGISTER_A, REGISTER_D);
 		break;
 
-	case 0xC6: 
+	case 0xC6:
 		BT(REGISTER_A, REGISTER_E);
 		break;
 
-	case 0xD6: 
+	case 0xD6:
 		BT(REGISTER_A, REGISTER_L);
 		break;
 
-	case 0xE6: 
+	case 0xE6:
 		BT(REGISTER_A, REGISTER_H);
 		break;
 
-	case 0xF6: 
+	case 0xF6:
 		BT(REGISTER_A, REGISTER_M);
 		break;
 
-	//ADI//
-
+		//ADI//
 	case 0x25:
 		ADI(REGISTER_A);
 		break;
 
-	//SBI//
+		//SBI//
 	case 0x26:
 		SBI(REGISTER_A);
 		break;
 
-	//CPI//
+		//CPI//
 
 	case 0x27:
 		CPI(REGISTER_A);
 		break;
 
-	//ANI//
+		//ANI//
 
 	case 0x28:
 		ANI(REGISTER_A);
 		break;
 
-	//XRI//
+		//XRI//
 
 	case 0x29:
 		XRI(REGISTER_A);
 		break;
 
-	//TAS (Transfters accumulator to status register)//
-	case 0x74: 
+		//TAS (Transfters accumulator to status register)//
+	case 0x74:
 		Flags = Registers[REGISTER_A];
 		break;
 
-	//TSA (Transfers Status register to accumulator//
-	case 0x75: 
+		//TSA (Transfers Status register to accumulator//
+	case 0x75:
 		Registers[REGISTER_A] = Flags;
 		break;
 
-	//CLC (Clear carrry flag)
-	case 0x15:  
+		//CLC (Clear carrry flag)
+	case 0x15:
 		Flags = Flags & (0xFF - FLAG_C);
 		break;
 
-	//SEC (Set carry flag)
-	case 0x16: 
+		//SEC (Set carry flag)
+	case 0x16:
 		Flags = Flags | FLAG_C;
-
-	//CLI (Clear interrupt flag)
+		break;
+		//CLI (Clear interrupt flag)
 	case 0x17:
 		Flags = Flags & (0xFF - FLAG_I);
-
-	//STI (Set interrupt flag)
+		break;
+		//STI (Set interrupt flag)
 	case 0x18:
 		Flags = Flags | FLAG_I;
-
-	//SEV (Set overflow flag)
+		break;
+		//SEV (Set overflow flag)
 	case 0x19:
 		Flags = Flags | FLAG_V;
-
-	//CLV (Clear overflow flag)
-	case 0x1A: 
+		break;
+		//CLV (Clear overflow flag)
+	case 0x1A:
 		Flags = Flags & (0xFF - FLAG_V);
+		break;
 
 
-	//JMP (Loads memory into program counter)//
+
+
+
+		//ASR (Arithmetic shift right memory or accumulator)//
+	case 0x49: //Absolute
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if address valid
+		if (address >= 0 && address < MEMORY_SIZE) {
+			// Set accumulator to memory value
+			Registers[REGISTER_A] = Memory[address];
+		}
+		// if carry not set
+		if ((Registers[REGISTER_A] & 0x01) == 0x01) {
+			Flags = Flags | FLAG_C; // set carry flag
+		}
+		else {
+			Flags = Flags & (0xFF - FLAG_C); // clear carry flag
+		}
+
+		// shift accumulator right
+		Registers[REGISTER_A] = (Registers[REGISTER_A] >> 1) & 0x7F;
+		// if negative flag not set
+		if ((Flags & FLAG_N) == FLAG_N) {
+			// set negative flag
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x80;
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		Memory[address] = Registers[REGISTER_A];
+		break;
+
+	case 0x59: //Abs X
+		address += IndexRegister;
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if address valid
+		if (address >= 0 && address < MEMORY_SIZE) {
+			// set accumulator
+			Registers[REGISTER_A] = Memory[address];
+		}
+		if ((Registers[REGISTER_A] & 0x01) == 0x01) {
+			Flags = Flags | FLAG_C; // set carry flag
+		}
+		else {
+			Flags = Flags & (0xFF - FLAG_C); // clear carry flag
+		}
+		Registers[REGISTER_A] = (Registers[REGISTER_A] >> 1) & 0x7F;
+		if ((Flags & FLAG_N) == FLAG_N) {
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x80;
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		Memory[address] = Registers[REGISTER_A];
+		break;
+
+		//ASRA (arithmetic shift right memory or accumulator)//
+	case 0x69:
+		if ((Registers[REGISTER_A] & 0x01) == 0x01) {
+			Flags = Flags | FLAG_C; // set carry flag
+		}
+		else {
+			Flags = Flags & (0xFF - FLAG_C); // clear carry flag
+		}
+		Registers[REGISTER_A] = (Registers[REGISTER_A] >> 1) & 0x7F;
+		if ((Flags & FLAG_N) == FLAG_N) {
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x80;
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		break;
+
+		//RCL (rotate left through carry memory or accumulator)//
+	case 0x47: //ABS
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		if (address >= 0 && address < MEMORY_SIZE) {
+			Registers[REGISTER_A] = Memory[address];
+		}
+		// set variable which stores the old flags 
+		saved_flags = Flags;
+		if ((Registers[REGISTER_A] & 0x80) == 0x80) {
+			Flags = Flags | FLAG_C; // set carry flag
+		}
+		else {
+			// set carry flag
+			Flags = Flags & (0xFF - FLAG_C);
+		}
+
+		// rotate accumulator to the left
+		Registers[REGISTER_A] = (Registers[REGISTER_A] << 1) & 0xFE;
+		// if flag C has not changed
+		if ((saved_flags & FLAG_C) == FLAG_C) {
+			// set last bit of accumulator to 1
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x01;
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		Memory[address] = Registers[REGISTER_A];
+		break;
+
+	case 0x57: //ABS X
+		// same deal as above but with index added to address before address calculated
+		address += IndexRegister;
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		if (address >= 0 && address < MEMORY_SIZE) {
+			Registers[REGISTER_A] = Memory[address];
+		}
+		saved_flags = Flags;
+		if ((Registers[REGISTER_A] & 0x80) == 0x80) {
+			Flags = Flags | FLAG_C; // set carry flag
+		}
+		else {
+			Flags = Flags & (0xFF - FLAG_C);
+		}
+		Registers[REGISTER_A] = (Registers[REGISTER_A] << 1) & 0xFE;
+		if ((saved_flags & FLAG_C) == FLAG_C) {
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x01;
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		Memory[address] = Registers[REGISTER_A];
+		break;
+
+		//RCR (rotate right through carry memory or accumulator)//
+	case 0x46: //ABS//
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		if (address >= 0 && address < MEMORY_SIZE) {
+			Registers[REGISTER_A] = Memory[address];
+		}
+		// save old flags
+		saved_flags = Flags;
+		// if last bit of accumulator is 1
+		if ((Registers[REGISTER_A] & 0x01) == 0x01) {
+			Flags = Flags | FLAG_C; // set carry flag
+		}
+		else {
+			// set all flags other than Flag C if flag C is set
+			Flags = Flags & (0xFF - FLAG_C);
+		}
+		// shift accumulator right
+		Registers[REGISTER_A] = (Registers[REGISTER_A] >> 1) & 0x7F;
+		// if flag c unchanged
+		if ((saved_flags & FLAG_C) == FLAG_C) {
+			// add flag c to the front of the accumulator
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x80;
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		Memory[address] = Registers[REGISTER_A];
+		break;
+
+
+	case 0x56: //ABS X//
+		// same as above, but add index first
+		address += IndexRegister;
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		if (address >= 0 && address < MEMORY_SIZE) {
+			Registers[REGISTER_A] = Memory[address];
+		}
+		saved_flags = Flags;
+		if ((Registers[REGISTER_A] & 0x01) == 0x01) {
+			Flags = Flags | FLAG_C; // set carry flag
+		}
+		else {
+			Flags = Flags & (0xFF - FLAG_C);
+		}
+		Registers[REGISTER_A] = (Registers[REGISTER_A] >> 1) & 0x7F;
+		if ((saved_flags & FLAG_C) == FLAG_C) {
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x80;
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		Memory[address] = Registers[REGISTER_A];
+		break;
+
+		//RCRA (rotate right throuhg carry memory or accululator)//
+	case 0x66:
+		// save old flags
+		saved_flags = Flags;
+		// if least significant bit of accumulator is set
+		if ((Registers[REGISTER_A] & 0x01) == 0x01) {
+			Flags = Flags | FLAG_C; // set carry flag
+		}
+		else {
+			// set all flags other than carry
+			Flags = Flags & (0xFF - FLAG_C);
+		}
+		// Shift accumulator to the right
+		Registers[REGISTER_A] = (Registers[REGISTER_A] >> 1) & 0x7F;
+		// if flag C unchanged
+		if ((saved_flags & FLAG_C) == FLAG_C) {
+			// add Flag C onto the front of the accumulator
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x80;
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		break;
+
+		//RCLA (Rotate left through carry memory or accumulator)//
+	case 0x67:
+		// save old flags
+		saved_flags = Flags;
+		// if most significant bit of accumulator is set
+		if ((Registers[REGISTER_A] & 0x80) == 0x80) {
+			// set carry flag
+			Flags = Flags | FLAG_C;
+		}
+		else {
+			// set all flags other than carry
+			Flags = Flags & (0xFF - FLAG_C);
+		}
+		// shift accumulator to the left
+		Registers[REGISTER_A] = (Registers[REGISTER_A] << 1) & 0xFE;
+		if ((saved_flags & FLAG_C) == FLAG_C) {
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x01;
+		}
+
+		set_flag_z(Registers[REGISTER_A]);
+		set_flag_n(Registers[REGISTER_A]);
+		break;
+
+		//ROL (Rotate left without carry)//
+	case 0x4B: // abs
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if address valid
+		if (address >= 0 && address < MEMORY_SIZE) {
+			// set accumulator to memory value
+			Registers[REGISTER_A] = Memory[address];
+		}
+		// if most significant bit of accumulator set
+		if ((Registers[REGISTER_A] & 0x80) == 0x80) {
+			// shift accumulator left and add 1 to least significant bit
+			Registers[REGISTER_A] = (Registers[REGISTER_A] << 1) + 0x01;
+		}
+		else {
+			// shift accumulator left without adding 1
+			Registers[REGISTER_A] = (Registers[REGISTER_A] << 1);
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		Memory[address] = Registers[REGISTER_A];
+		break;
+
+	case 0x5B: //ROL abs,X
+		// add index to address
+		address += IndexRegister;
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		if (address >= 0 && address < MEMORY_SIZE) {
+			Registers[REGISTER_A] = Memory[address];
+		}
+		if ((Registers[REGISTER_A] & 0x80) == 0x80) {
+			Registers[REGISTER_A] = (Registers[REGISTER_A] << 1) & 0xFE;
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x01;
+		}
+		else {
+			Registers[REGISTER_A] = (Registers[REGISTER_A] << 1) & 0xFE;
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		Memory[address] = Registers[REGISTER_A];
+		break;
+
+
+		//ROLA (Rotate without cacrry memory or accumulator)//
+	case 0x6B:
+		// if most significant bit set
+		if ((Registers[REGISTER_A] & 0x80) == 0x80) {
+			// rotate accumulator to the left
+			Registers[REGISTER_A] = (Registers[REGISTER_A] << 1) & 0xFE;
+			// add 1 to the end (if not already set)
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x01;
+		}
+		else {
+			// shift to the left if most significant not set
+			Registers[REGISTER_A] = (Registers[REGISTER_A] << 1) & 0xFE;
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		break;
+
+		//SAL (arithmetic shift left memory or accumulator)//
+	case 0x48: //abs//
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if address valid
+		if (address >= 0 && address < MEMORY_SIZE) {
+			// set accumulator to address value
+			Registers[REGISTER_A] = Memory[address];
+		}
+		// if accumulator most significant bit is set
+		if ((Registers[REGISTER_A] & 0x80) == 0x80) {
+			Flags = Flags | FLAG_C; // set carry flag
+		}
+		else {
+			Flags = Flags & (0xFF - FLAG_C); //clear carry flag
+		}
+		// shift accumulator to the left 
+		Registers[REGISTER_A] = (Registers[REGISTER_A] << 1) & 0xFE;
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		Memory[address] = Registers[REGISTER_A];
+		break;
+
+	case 0x58: //abs x
+		address += IndexRegister;
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		if (address >= 0 && address < MEMORY_SIZE) {
+			Registers[REGISTER_A] = Memory[address];
+		}
+		if ((Registers[REGISTER_A] & 0x80) == 0x80) {
+			Flags = Flags | FLAG_C; 
+		}
+		else {
+			Flags = Flags & (0xFF - FLAG_C);
+		}
+		Registers[REGISTER_A] = (Registers[REGISTER_A] << 1) & 0xFE;
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		Memory[address] = Registers[REGISTER_A];
+		break;
+
+		//SALA (arithmetic shift left memory or accumulator)//
+	case 0x68:
+		if ((Registers[REGISTER_A] & 0x80) == 0x80)
+		{
+			Flags = Flags | FLAG_C;
+		}
+		else
+		{
+			Flags = Flags & (0xFF - FLAG_C);
+		}
+		Registers[REGISTER_A] = (Registers[REGISTER_A] << 1) & 0xFE;
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		break;
+
+		////ROR (Rotate right without carry Memory or Accumulator)//
+	case 0x4C: //abs
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		if (address >= 0 && address < MEMORY_SIZE) {
+			Registers[REGISTER_A] = Memory[address];
+		}// if least significant bit set
+		if ((Registers[REGISTER_A] & 0x01) == 0x01) {
+			// shift accumulator right 
+			Registers[REGISTER_A] = (Registers[REGISTER_A] >> 1) & 0x7F;
+			// set most significant bit
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x80;
+		}
+		else {
+			// else, just shift right
+			Registers[REGISTER_A] = (Registers[REGISTER_A] >> 1) & 0x7F;
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		Memory[address] = Registers[REGISTER_A];
+		break;
+
+	case 0x5C: //ROR abs,X
+		address += IndexRegister;
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		if (address >= 0 && address < MEMORY_SIZE) {
+			Registers[REGISTER_A] = Memory[address];
+		}
+		if ((Registers[REGISTER_A] & 0x01) == 0x01) {
+			Registers[REGISTER_A] = (Registers[REGISTER_A] >> 1) & 0x7F;
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x80;
+		}
+		else {
+			Registers[REGISTER_A] = (Registers[REGISTER_A] >> 1) & 0x7F;
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		Memory[address] = Registers[REGISTER_A];
+		break;
+
+	case 0x6C://RORA (Rotate right without carry Memory or Accumulator)
+		// if least significant bit set
+		if ((Registers[REGISTER_A] & 0x01) == 0x01) {
+			// shift accumulator right and set most significant bit
+			Registers[REGISTER_A] = (Registers[REGISTER_A] >> 1) & 0x7F;
+			Registers[REGISTER_A] = Registers[REGISTER_A] | 0x80;
+		}
+		else {
+			// shift accumulator right
+			Registers[REGISTER_A] = (Registers[REGISTER_A] >> 1) & 0x7F;
+		}
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		break;
+
+
+
+		//JMP (Loads memory into program counter)//
 
 	case 0xFA:
-		HB = fetch();
-		LB = fetch();
+		HB = getHB();
+		LB = getLB();
 
-		address = ((WORD)HB << 8) + (WORD)LB;
-
-		ProgramCounter = address;
-		break;
-
-	//JPR (Jump to subroutine)//
-	case 0x33: 
-		HB = fetch();
-		LB = fetch();
-		address = ((WORD)HB << 8) + (WORD)LB;
-		if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
-		{
-			Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
-			StackPointer--;
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if stackpointer valid
+		if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE)) {
+			// Push program counter onto stack
 			Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
 			StackPointer--;
+			Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
+			StackPointer--;
 		}
+		// load memory into program counter
 		ProgramCounter = address;
 		break;
 
-	//RTN (Return from subroutine)//
-	case 0x0E: 
-		if ((StackPointer >= 0) && (StackPointer < MEMORY_SIZE - 2))
-		{
+		//JPR (Jump to subroutine)//
+	case 0x33:
+		HB = getHB();
+		LB = getLB();
+
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if stackpointer valid
+		if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE)) {
+			// push subroutine onto stack
+			Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
+			StackPointer--;
+			Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
+			StackPointer--;
+		}
+		// load program counter with subroutine address
+		ProgramCounter = address;
+		break;
+
+		//RTN (Return from subroutine)//
+	case 0x0E:
+		// if stackpointer valid
+		if ((StackPointer >= 0) && (StackPointer < MEMORY_SIZE - 2)) {
+			// pop address values off stack
 			StackPointer++;
 			HB = Memory[StackPointer];
 			StackPointer++;
 			LB = Memory[StackPointer];
+
+			// return to main routine address in program counter
+			ProgramCounter = ((WORD)HB << 8) + (WORD)LB;
 		}
-		ProgramCounter = ((WORD)HB << 8) + (WORD)LB;
 		break;
 
-	//BRA (Branch always)//
+		//BRA (Branch always)//
 
-	case 0x00: 
-		LB = fetch();
-		WORD oﬀset;
-
-		oﬀset = (WORD)LB;
-		if ((oﬀset & 0x80) != 0)
-		{
-			oﬀset = oﬀset + 0xFF00;
+	case 0x00:
+		LB = getLB();
+		// set offset to lower bound
+		offset = (WORD)LB;
+		// if offset will not go out of bounds
+		if ((offset & 0x80) != 0) { 
+			// add offset to offset
+			offset = offset + 0xFF00;
 		}
-		address = ProgramCounter + oﬀset;
+		// branch to new address
+		address = ProgramCounter + offset;
+		// set program counter to new address
 		ProgramCounter = address;
 		break;
 
-	///CCC (Call on carry clear)///
 
-	case 0x34: 
-		HB = fetch();
-		LB = fetch();
-		address = ((WORD)HB << 8) + (WORD)LB;
-		ProgramCounter = address;
-		if ((Flags & FLAG_C) != 0)
-		{
-			if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
-			{
-				Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
-				StackPointer--;
-				Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
-				StackPointer--;
+	//BCC (Branch on carry clear)
+	case 0x01:
+		LB = getLB();
+		offset = (WORD)LB;
+		// if carry is clear
+		if ((Flags & FLAG_C) == 0) {
+			if ((offset & 0x80) != 0) {
+				// add offset to offset
+				offset = offset + 0xFF00;
 			}
-
+			// branch to new address
+			address = ProgramCounter + offset;
+			ProgramCounter = address;
 		}
 		break;
 
-	//CCS (Call on carry set)//
-
-	case 0x35: 
-		HB = fetch();
-		LB = fetch();
-		address = ((WORD)HB << 8) + (WORD)LB;
-		ProgramCounter = address;
-		if ((Flags & FLAG_C) != 0)
-		{
-			if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
-			{
-				Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
-				StackPointer--;
-				Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
-				StackPointer--;
+		//BNE (Branch on result not Zero)
+	case 0x03: 
+		LB = getLB();
+		offset = (WORD)LB;
+		// if zero flag not set
+		if ((Flags & FLAG_Z) == 0) {
+			if ((offset & 0x80) != 0) {
+				offset = offset + 0xFF00;
 			}
+			// branch to new address
+			address = ProgramCounter + offset;
+			ProgramCounter = address;
 		}
 		break;
 
-	//CNE (Call on result not zero)//
-
-	case 0x36: 
-		HB = fetch();
-		LB = fetch();
-		address = ((WORD)HB << 8) + (WORD)LB;
-		ProgramCounter = address;
-		if ((Flags & FLAG_Z) != 0)
-		{
-			if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
-			{
-				Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
-				StackPointer--;
-				Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
-				StackPointer--;
+		// BCS(Branch on Carry set)
+	case 0x02: 
+		LB = getLB();
+		offset = (WORD)LB;
+		// if carry set
+		if ((Flags & FLAG_C) != 0) {
+			if ((offset & 0x80) != 0) { 
+				offset = offset + 0xFF00;
 			}
-
+			// branch to new address
+			address = ProgramCounter + offset;
+			ProgramCounter = address;
 		}
 		break;
 
-	//CEQ (Call on result equal to zero)//
-
-	case 0x37:
-		HB = fetch();
-		LB = fetch();
-		address = ((WORD)HB << 8) + (WORD)LB;
-		ProgramCounter = address;
-		if ((Flags & FLAG_Z) != 0)
-		{
-			if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
-			{
-				Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
-				StackPointer--;
-				Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
-				StackPointer--;
+		// BEQ (Branch on result equal to Zero)
+	case 0x04: 
+		LB = getLB();
+		offset = (WORD)LB;
+		// if zero flag set
+		if ((Flags & FLAG_Z) != 0) {
+			if ((offset & FLAG_Z) != 0) {
+				offset = offset + 0xFF00;
 			}
+			// branch to new address
+			address = ProgramCounter + offset;
+			ProgramCounter = address;
 		}
 		break;
 
-	//CVC (Call on overflow clear)//
-
-	case 0x38: 
-		HB = fetch();
-		LB = fetch();
-		address = ((WORD)HB << 8) + (WORD)LB;
-		ProgramCounter = address;
-		if ((Flags & FLAG_V) != 0)
-		{
-			if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
-			{
-				Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
-				StackPointer--;
-				Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
-				StackPointer--;
+	//BVC(Branch on overflow clear)
+	case 0x05:
+		LB = getLB();
+		offset = (WORD)LB;
+		// if overflow flag not set
+		if ((Flags & FLAG_V) == 0) {
+			if ((offset & 0x80) != 0) { 
+				offset = offset + 0xFF00;
 			}
+			// branch to new address
+			address = ProgramCounter + offset;
+			ProgramCounter = address;
 		}
 		break;
 
-	//CVS (Call on overflow set)//
+		//BVS Branch on over flow set
+	case 0x06:
+		LB = getLB();
+		offset = (WORD)LB;
+		// if overflow set
+		if ((offset & 0x80) != 0) {
+			offset = offset + 0xFF00;
+		}
+		if ((Flags & FLAG_V) != 0) {
+			// branch to new address
+			address = ProgramCounter + offset;
+			ProgramCounter = address;
+		}
+		break;
 
-	case 0x39:
+		// BMI Branch on negative result 
+	case 0x07:
+		LB = getLB();
+		offset = (WORD)LB;
+		// if negative flag set
+		if ((Flags & FLAG_N) != 0) {
+			if ((offset & 0x80) != 0) {
+				offset = offset + 0xFF00;
+			}
+			// branch to new address
+			address = ProgramCounter + offset;
+			ProgramCounter = address;
+		}
+		break;
 
-		HB = fetch();
-		LB = fetch();
-		if ((Flags & FLAG_V) == FLAG_V) // Overflow flag set?
-		{
-			address += (WORD)((WORD)HB << 8) + LB;
+		//BGE Branch on result less than or equal to zero 
+	case 0x09: 
+		LB = getLB();
+		offset = (WORD)LB;
+		if ((offset & 0x80) != 0) { 
+			offset = offset + 0xFF00;
+		}
+		// if overflow and negative flags not set
+		if (((Flags & FLAG_N) & (Flags & FLAG_V)) == 0) {
+			// branch to new address
+			address = ProgramCounter + offset;
+			ProgramCounter = address;
+		}
+		break;
+
+		//BPL Branch on positive result
+	case 0x08:
+		LB = getLB();
+		offset = (WORD)LB;
+		// if negative flag not set
+		if ((Flags & FLAG_N) == 0) {
+			if ((offset & 0x80) != 0) { 
+				offset = offset + 0xFF00;
+			}
+			// branch to new address
+			address = ProgramCounter + offset;
+			ProgramCounter = address;
+		}
+		break;
+
+		//BLE branch on result greater than or equal to zero
+	case 0x0A: 
+		LB = getLB();
+		offset = (WORD)LB;
+		if ((offset & 0x80) != 0) { 
+			offset = offset + 0xFF00;
+		}
+		// if result is greater than or equal to zero
+		if (((Flags & FLAG_Z) | (Flags & FLAG_N) & (Flags & FLAG_V)) != 0) {
+			// branch to new address
+			address = ProgramCounter + offset;
+			ProgramCounter = address;
+		}
+		break;
+
+		//BLS Branch on result same or lower
+	case 0x0B:
+		LB = getLB();
+		offset = (WORD)LB;
+		if ((offset & 0x80) != 0) { 
+			offset = offset + 0xFF00;
+		}
+		// if result same or lower
+		if (((Flags & FLAG_C) | (Flags & FLAG_Z)) != 0) {
+			address = ProgramCounter + offset;
+			ProgramCounter = address;
+		}
+		break;
+
+		//BHI Branch on result higher
+	case 0x0C:
+		LB = getLB();
+		offset = (WORD)LB;
+		if ((offset & 0x80) != 0) { 
+			offset = offset + 0xFF00;
+		}
+		// if result higher than previous
+		if (((Flags & FLAG_Z) | (Flags & FLAG_C)) == 0) {
+			address = ProgramCounter + offset;
+			ProgramCounter = address;
+		}
+		break;
+
+
+		//CCC (Call on carry clear)
+	case 0x34:
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		//if carry clear
+		if ((Flags & FLAG_C) == 0) {
 			if (address >= 0 && address < MEMORY_SIZE)
 			{
-				// Push return address onto the stack
+				// if stack pointer valid
 				if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
 				{
-					Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
-					StackPointer--;
+					// add program to stack
 					Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
 					StackPointer--;
+					Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
+					StackPointer--;
+					ProgramCounter = address;
 				}
-				ProgramCounter = (WORD)address;
+
+			}
+
+		}
+		break;
+
+		//CCS (Call on carry set)//
+
+	case 0x35:
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if carry set
+		if ((Flags & FLAG_C) != 0) {
+			// if address valid
+			if (address >= 0 && address < MEMORY_SIZE)
+			{
+				// if stack not full
+				if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
+				{
+					// add program to stack
+					Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
+					StackPointer--;
+					Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
+					StackPointer--;
+					ProgramCounter = address;
+				}
 			}
 		}
 		break;
 
-	//BCS (Branch on carry set)//
+		//CNE (Call on result not zero)//
 
-	case 0x02: 
-		LB = fetch();
-		if ((Flags & FLAG_C) == FLAG_C) {
-			WORD offset = (WORD)LB;
-			if ((offset & 0x80) != 0) { // need to sign extend
-				offset = offset + 0xFF00;
-			} address = ProgramCounter + offset;
-			ProgramCounter = address;
+	case 0x36:
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if result not zero
+		if ((Flags & FLAG_Z) == 0) {
+			if (address >= 0 && address < MEMORY_SIZE)
+			{
+				// if stack not full
+				if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
+				{
+					// add program to stack
+					Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
+					StackPointer--;
+					Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
+					StackPointer--;
+					ProgramCounter = address;
+				}
+			}
+		}
+		break;
+
+		//CEQ (Call on result equal to zero)//
+
+	case 0x37: 
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if result is 0
+		if ((Flags & FLAG_Z) != 0) {
+			if (address >= 0 && address < MEMORY_SIZE)
+			{
+				// if stack not full
+				if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
+				{
+					// add program to stack
+					Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
+					StackPointer--;
+					Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
+					StackPointer--;
+					ProgramCounter = address;
+				}
+			}
+		}
+		break;
+
+		//CLE Call on result higher
+	case 0x3D:
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if result higher than previous
+		if (((Flags & FLAG_C) || ((Flags & FLAG_Z)) == 0)) {
+			if (address >= 0 && address < MEMORY_SIZE)
+			{	// if stack not full
+				if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
+				{
+					// add program to stack
+					Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
+					StackPointer--;
+					Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
+					StackPointer--;
+					ProgramCounter = address;
+				}
+			}
+		}
+		break;
+
+		//CVC (Call on overflow clear)//
+	case 0x38:
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if overflow flag clear
+		if ((Flags & FLAG_V) != FLAG_V) {
+			if (address >= 0 && address < MEMORY_SIZE)
+			{
+				// if stack not full
+				if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
+				{
+					// add program to stack
+					Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
+					StackPointer--;
+					Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
+					StackPointer--;
+					ProgramCounter = address;
+
+				}
+			}
+		}
+		break;
+
+		//CVS (Call on overflow set)//
+	case 0x39:
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if overflow set
+		if ((Flags & FLAG_V) == FLAG_V) 
+		{
+			// if stack not full
+			if (address >= 0 && address < MEMORY_SIZE)
+			{
+				if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
+				{
+					// add program to stack
+					Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
+					StackPointer--;
+					Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
+					StackPointer--;
+					ProgramCounter = address;
+				}
+			}
+		}
+		break;
+
+		//CHI Call on result same or lower
+	case 0x3C:
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if result same or lower than previous
+		if (((Flags & FLAG_C) | (Flags & FLAG_Z)) != 0) {
+			if (address >= 0 && address < MEMORY_SIZE)
+			{
+				// if stack not full
+				if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
+				{
+					// add program to stack
+					Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
+					StackPointer--;
+					Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
+					StackPointer--;
+					ProgramCounter = address;
+				}
+
+			}
+		}
+		break;
+
+		//CMI (Call on negative result)
+	case 0x3A:
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if negative flag set
+		if ((Flags & FLAG_N) != 0) {
+			if (address >= 0 && address < MEMORY_SIZE)
+			{
+				// if stack not full
+				if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
+				{
+					// add program to stack
+					Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
+					StackPointer--;
+					Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
+					StackPointer--;
+					ProgramCounter = address;
+				}
+			}
+		}
+		break;
+
+		// CPL Call on positive result
+	case 0x3B: 
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// if negative flag not set
+		if ((Flags & FLAG_N) == 0) {
+			if (address >= 0 && address < MEMORY_SIZE)
+			{
+				// if stack not full
+				if ((StackPointer >= 2) && (StackPointer < MEMORY_SIZE))
+				{
+					// add program to stack
+					Memory[StackPointer] = (BYTE)((ProgramCounter >> 8) & 0xFF);
+					StackPointer--;
+					Memory[StackPointer] = (BYTE)(ProgramCounter & 0xFF);
+					StackPointer--;
+					ProgramCounter = address;
+				}
+			}
 		}
 		break;
 
 
 		//INC absolute//
 	case 0x44:
-		HB = fetch();
-		LB = fetch();
+		HB = getHB();
+		LB = getLB();
 		address += (WORD)((WORD)HB << 8) + LB;
+		// if address valid
 		if (address >= 0 && address < MEMORY_SIZE) {
+			// increment memory value at addres
 			++Memory[address];
 		}
 		break;
 
 		//INC Indexed//
 	case 0x54:
+		// same as above, but first adding index register to address
 		address += IndexRegister;
-		HB = fetch();
-		LB = fetch();
+		HB = getHB();
+		LB = getLB();
 		address += (WORD)((WORD)HB << 8) + LB;
 		if (address >= 0 && address < MEMORY_SIZE) {
 			++Memory[address];
@@ -1532,6 +2366,7 @@ void Group_1(BYTE opcode) {
 
 		//INCA (Increment memory into accumulator)//
 	case 0x64:
+		// increment value of accumulator
 		++Registers[REGISTER_A];
 		set_flag_n(Registers[REGISTER_A]);
 		set_flag_z(Registers[REGISTER_A]);
@@ -1539,22 +2374,90 @@ void Group_1(BYTE opcode) {
 
 		//INX (Increment indexRegister//
 	case 0x1C:
+		// increment index register
 		++IndexRegister;
 		set_flag_z(IndexRegister);
 		break;
 
 		//DEX (Decrement indexRegister) //
 	case 0x1B:
+		// decrement index register
 		--IndexRegister;
 		set_flag_z(IndexRegister);
 		break;
 
-	case 0x1E:  // WAI
-
-		halt = true;
-
+		//DECA (Decrement accumulator)//
+	case 0x65:
+		// decrement accumulator
+		--Registers[REGISTER_A];
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
 		break;
+
+		//DEC//
+	case 0x45: //Absolute
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		if (address >= 0 && address < MEMORY_SIZE) {
+			// if address valid, decrement memory at address
+			--Memory[address];
+		}
+		break;
+
+	case 0x55: //Indexed
+		address += IndexRegister;
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		if (address >= 0 && address < MEMORY_SIZE) {
+			++Memory[address];
+		}
+		break;
+
+
+		//NOT (Negate memory)//
+	case 0x4A: //Not Absolute
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+		// temporary variable to store NOT of memory
+		data = ~Memory[address];
+		if (address >= 0 && address < MEMORY_SIZE) {
+			// if address valid, update memory
+			Memory[address] = (BYTE)data;
+		}
+		break;
+
+	case 0x5A: // Not absolute indexed
+		address += IndexRegister;
+		HB = getHB();
+		LB = getLB();
+		address += (WORD)((WORD)HB << 8) + LB;
+
+		data = ~Memory[address];
+		if (address >= 0 && address < MEMORY_SIZE) {
+			Memory[address] = (BYTE)data;
+		}
+		break;
+
+
+		//NOTA//
+	case 0x6A:
+		// negate accumulator
+		Registers[REGISTER_A] = Registers[REGISTER_A] ^ (0xFF);
+		set_flag_n(Registers[REGISTER_A]);
+		set_flag_z(Registers[REGISTER_A]);
+		set_flag_c(Registers[REGISTER_A]);
+		break;
+
+	case 0x1E:  // WAI
+		halt = true;
+		break;
+
+
 	}
+
 
 
 }
